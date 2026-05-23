@@ -123,27 +123,27 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 }
 
 /* IMAGE LIGHTBOX */
-.lb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.lb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto}
 .lb-overlay.open{display:flex}
-.lb-box{background:#0a0a0a;border-radius:14px;width:100%;max-width:960px;max-height:96vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5)}
-.lb-hd{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#1a1a1a;color:#fff;border-bottom:1px solid #2a2a2a}
+.lb-box{background:#0a0a0a;border-radius:14px;width:100%;max-width:1100px;max-height:96vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lb-hd{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#1a1a1a;color:#fff;border-bottom:1px solid #2a2a2a;flex-shrink:0}
+.lb-close{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:none;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:24px;line-height:1;cursor:pointer;font-family:inherit;padding:0;transition:background .15s}
+.lb-close:hover{background:rgba(255,255,255,.22)}
 .lb-title{flex:1;min-width:0;font-size:13px;font-weight:600;color:rgba(255,255,255,.9);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lb-acts{display:flex;gap:8px;align-items:center;flex-shrink:0}
-.lb-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 12px;border:none;border-radius:8px;background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s}
-.lb-btn:hover{background:rgba(255,255,255,.22)}
-.lb-dl{background:var(--primary)}
+.lb-dl{flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border:none;border-radius:100px;background:var(--primary);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s;min-height:44px}
 .lb-dl:hover{background:var(--primary-dark)}
-.lb-close{padding:0;width:32px;height:32px;font-size:22px;line-height:1;border-radius:50%}
-.lb-body{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;background:#0a0a0a;min-height:200px;overflow:auto}
-.lb-body img{max-width:100%;max-height:80vh;height:auto;display:none;border-radius:6px;box-shadow:0 4px 24px rgba(0,0,0,.4)}
+.lb-body{flex:1;display:flex;align-items:center;justify-content:center;padding:14px;background:#0a0a0a;min-height:200px;overflow:auto}
+.lb-body img{max-width:100%;max-height:calc(96vh - 90px);width:auto;height:auto;display:none;border-radius:6px;box-shadow:0 4px 24px rgba(0,0,0,.4)}
 .lb-loading{color:rgba(255,255,255,.6);font-size:13px;display:flex;align-items:center;gap:8px}
 .lb-loading .loading-spin{border-color:rgba(255,255,255,.2);border-top-color:#fff}
 @media(max-width:600px){
   .lb-overlay{padding:0}
-  .lb-box{max-height:100vh;border-radius:0;height:100vh}
-  .lb-body img{max-height:calc(100vh - 70px)}
-  .lb-title{font-size:12px}
-  .lb-btn{padding:6px 10px;font-size:11px}
+  .lb-box{max-height:100vh;border-radius:0;height:100vh;height:100dvh}
+  .lb-hd{padding:8px 10px;gap:8px}
+  .lb-title{display:none}
+  .lb-dl{padding:10px 18px;font-size:14px}
+  .lb-body{padding:8px}
+  .lb-body img{max-height:calc(100dvh - 76px);max-width:100%}
 }
 
 /* MOBILE */
@@ -263,11 +263,9 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 <div class="lb-overlay" id="lb" onclick="if(event.target===this)closeImage()">
   <div class="lb-box">
     <div class="lb-hd">
+      <button class="lb-close" onclick="closeImage()" aria-label="Đóng">×</button>
       <div class="lb-title" id="lbTitle">—</div>
-      <div class="lb-acts">
-        <a class="lb-btn lb-dl" id="lbDownload" download><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải về</a>
-        <button class="lb-btn lb-close" onclick="closeImage()" aria-label="Đóng">×</button>
-      </div>
+      <a class="lb-dl" id="lbDownload" download><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải ảnh</a>
     </div>
     <div class="lb-body">
       <div class="lb-loading" id="lbLoading"><span class="loading-spin"></span> Đang tải ảnh…</div>
