@@ -99,6 +99,25 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 .loading{text-align:center;padding:40px 20px;color:var(--text-3);font-size:13px}
 .loading-spin{display:inline-block;width:18px;height:18px;border:2.5px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
 
+/* PAGINATION */
+.pg{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:20px;flex-wrap:wrap}
+.pg-nums{display:inline-flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.pg-btn{min-width:38px;height:38px;padding:0 10px;border:1.5px solid var(--border);background:#fff;color:var(--text-2);font-size:13px;font-weight:600;border-radius:9px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;transition:all .15s}
+.pg-btn:hover:not(:disabled){border-color:var(--primary);color:var(--primary)}
+.pg-btn:disabled{opacity:.4;cursor:not-allowed}
+.pg-btn.pg-on{background:var(--primary);border-color:var(--primary);color:#fff}
+.pg-nav{font-size:12px;padding:0 12px;min-width:auto}
+.pg-dots{padding:0 4px;color:var(--text-3);font-weight:600;align-self:center}
+.pg-info{display:none;font-size:13px;color:var(--text-3);margin:0 6px}
+.pg-info strong{color:var(--text-1)}
+@media(max-width:600px){
+  .pg{gap:4px}
+  .pg-nums{display:none}
+  .pg-info{display:inline-flex;align-items:center}
+  .pg-btn{min-width:44px;height:44px;font-size:13px}
+  .pg-nav{padding:0 14px}
+}
+
 /* IMAGE LIGHTBOX */
 .lb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto}
 .lb-overlay.open{display:flex}
@@ -260,6 +279,8 @@ let JOBS = [];
 let currentSearch = '';
 let currentCat = null;
 let currentPref = null;
+let currentPage = 1;
+const JOBS_PER_PAGE = 15;
 
 const REGIONS = {
   'Hokkaido':['Hokkaido','Sapporo'],
@@ -369,7 +390,7 @@ function closeNganh(){
   document.getElementById('nganhTrigger')?.classList.remove('open');
 }
 function selectNganh(val){
-  currentCat = val;
+  currentCat = val; currentPage = 1;
   document.getElementById('nganhTrigger').classList.add('has-value');
   document.getElementById('nganhLabel').textContent = val;
   document.querySelectorAll('#nganhPanel .cs-flat-item').forEach(b => b.classList.toggle('cs-selected', b.dataset.val === val));
@@ -377,7 +398,7 @@ function selectNganh(val){
   renderJobs();
 }
 function clearNganh(){
-  currentCat = null;
+  currentCat = null; currentPage = 1;
   document.getElementById('nganhTrigger').classList.remove('has-value');
   document.getElementById('nganhLabel').textContent = 'Ngành nghề';
   document.querySelectorAll('#nganhPanel .cs-flat-item').forEach(b => b.classList.remove('cs-selected'));
@@ -385,30 +406,30 @@ function clearNganh(){
 }
 
 function doSearch(val){
-  currentSearch = val.trim().toLowerCase();
+  currentSearch = val.trim().toLowerCase(); currentPage = 1;
   document.getElementById('searchClear').classList.toggle('show', !!currentSearch);
   renderJobs();
 }
 function clearSearch(){
   document.getElementById('searchInput').value = '';
-  currentSearch = '';
+  currentSearch = ''; currentPage = 1;
   document.getElementById('searchClear').classList.remove('show');
   renderJobs();
 }
 function setFilterPref(val){
-  currentPref = val || null;
+  currentPref = val || null; currentPage = 1;
   const sel = document.getElementById('khuvucSelect');
   sel.classList.toggle('has-value', !!val);
   renderJobs();
 }
 function clearPref(){
-  currentPref = null;
+  currentPref = null; currentPage = 1;
   const sel = document.getElementById('khuvucSelect');
   sel.value = ''; sel.classList.remove('has-value');
   renderJobs();
 }
 function clearAllFilters(){
-  currentSearch = ''; currentCat = null; currentPref = null;
+  currentSearch = ''; currentCat = null; currentPref = null; currentPage = 1;
   document.getElementById('searchInput').value = '';
   document.getElementById('searchClear').classList.remove('show');
   document.getElementById('khuvucSelect').value = '';
@@ -445,11 +466,16 @@ function renderJobs(){
     );
   }
 
-  document.getElementById('listCount').textContent = jobs.length + ' đơn';
+  const total = jobs.length;
+  const totalPages = Math.max(1, Math.ceil(total / JOBS_PER_PAGE));
+  if(currentPage > totalPages) currentPage = totalPages;
+  const pageJobs = jobs.slice((currentPage - 1) * JOBS_PER_PAGE, currentPage * JOBS_PER_PAGE);
+
+  document.getElementById('listCount').textContent = total + ' đơn' + (totalPages > 1 ? ` · Trang ${currentPage}/${totalPages}` : '');
   renderFilterChips();
 
   const container = document.getElementById('jobsContainer');
-  if(!jobs.length){
+  if(!total){
     container.innerHTML = `<div class="empty">
       <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <p>Không có đơn nào phù hợp${currentSearch?` với "<strong>${currentSearch}</strong>"`:''}</p>
@@ -457,7 +483,7 @@ function renderJobs(){
     return;
   }
 
-  container.innerHTML = '<div class="jobs-list">' + jobs.map(j => {
+  container.innerHTML = '<div class="jobs-list">' + pageJobs.map(j => {
     const imgBtn = j.imageUrl
       ? `<a class="jimg-btn" onclick="event.stopPropagation();openImage('${j.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg> Xem ảnh</a>`
       : `<span class="jimg-btn disabled"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 3l18 18"/></svg> Chưa có ảnh</span>`;
@@ -466,7 +492,7 @@ function renderJobs(){
       <div class="jtitle">${j.title}</div>
       ${imgBtn}
     </div>`;
-  }).join('') + '</div>';
+  }).join('') + '</div>' + renderPagination(total, totalPages);
 }
 
 // Extract Drive file ID from various URL formats
@@ -511,6 +537,38 @@ function openImage(id){
 function closeImage(){
   document.getElementById('lb').classList.remove('open');
   document.body.style.overflow = '';
+}
+
+function renderPagination(total, totalPages){
+  if(totalPages <= 1) return '';
+  const delta = 2; // pages around current
+  const pages = [];
+  for(let i = 1; i <= totalPages; i++){
+    if(i === 1 || i === totalPages || (i >= currentPage - delta && i <= currentPage + delta)){
+      pages.push(i);
+    }
+  }
+  let pgBtns = '';
+  let prev = 0;
+  for(const i of pages){
+    if(prev && i - prev > 1) pgBtns += `<span class="pg-dots">…</span>`;
+    pgBtns += `<button class="pg-btn${i === currentPage ? ' pg-on' : ''}" onclick="goToPage(${i})">${i}</button>`;
+    prev = i;
+  }
+  const prevDis = currentPage === 1 ? 'disabled' : '';
+  const nextDis = currentPage === totalPages ? 'disabled' : '';
+  return `<div class="pg">
+    <button class="pg-btn pg-nav" onclick="goToPage(${currentPage - 1})" ${prevDis}>← Trước</button>
+    <span class="pg-nums">${pgBtns}</span>
+    <span class="pg-info">Trang <strong>${currentPage}</strong> / ${totalPages}</span>
+    <button class="pg-btn pg-nav" onclick="goToPage(${currentPage + 1})" ${nextDis}>Tiếp →</button>
+  </div>`;
+}
+
+function goToPage(p){
+  currentPage = p;
+  renderJobs();
+  document.getElementById('jobsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function toggleChat(e){
