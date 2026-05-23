@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokutei đầu Việt — Bảng tra cứu CTV</title>
+<meta name="description" content="Bảng tra cứu nội bộ các đơn hàng Tokutei đầu Việt dành cho cộng tác viên.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7FAF8;--surface:#fff;--surface-alt:#F0F7F2;--border:#E0EBE3;
+  --primary:#1A8A4F;--primary-dark:#147040;--primary-soft:#E8F5ED;
+  --accent:#E0A33F;--accent-soft:#FDF6E6;
+  --text-1:#0F1F16;--text-2:#4E5C53;--text-3:#9AA8A0;
+  --grad:linear-gradient(135deg,#0E5F37 0%,#1A8A4F 55%,#3FB377 100%);
+  --r:14px;--sh:0 1px 2px rgba(0,0,0,.04),0 4px 14px rgba(0,0,0,.06);
+  --sh2:0 2px 8px rgba(0,0,0,.06),0 12px 36px rgba(0,0,0,.1);
+  --nav:60px
+}
+html{scroll-behavior:smooth}
+body{font-family:'Be Vietnam Pro',-apple-system,sans-serif;background:var(--bg);color:var(--text-1);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{line-height:1.2;letter-spacing:-.02em}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+/* NAV */
+nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:50;height:var(--nav)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:100%;display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text-1)}
+.logo-ic{width:32px;height:32px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800}
+.logo-text{font-size:15px;font-weight:700}
+.logo-text em{color:var(--primary);font-style:normal}
+.nav-meta{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:12px;color:var(--text-3)}
+.nav-meta strong{color:var(--text-2);font-weight:600}
+.refresh-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border:1.5px solid var(--border);background:#fff;border-radius:100px;color:var(--text-2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.refresh-btn:hover{border-color:var(--primary);color:var(--primary)}
+.refresh-btn.loading svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HERO */
+.hero{background:var(--grad);color:#fff;padding:36px 0 24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-30%;right:-15%;width:55%;aspect-ratio:1;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 65%);pointer-events:none}
+.hero h1{font-size:clamp(22px,3.6vw,32px);font-weight:800;letter-spacing:-.02em;position:relative}
+.hero p{font-size:13px;color:rgba(255,255,255,.85);margin-top:6px;position:relative}
+.hero-stats{display:flex;gap:20px;margin-top:18px;flex-wrap:wrap;position:relative}
+.hstat{display:flex;align-items:center;gap:8px;font-size:13px}
+.hstat strong{font-size:18px;font-weight:800;letter-spacing:-.02em}
+
+/* FILTER */
+.filter-bar{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin:-20px 0 20px;position:relative;z-index:5}
+.search-bar{position:relative;margin-bottom:10px}
+.search-bar input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 38px 11px 38px;font-size:14px;color:var(--text-1);background:var(--surface-alt);outline:none;transition:border .2s;font-family:inherit}
+.search-bar input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(26,138,79,.1)}
+.search-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:var(--border);border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:14px;color:var(--text-2);display:none;align-items:center;justify-content:center;padding:0}
+.search-clear.show{display:flex}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap}
+.cs-wrap{position:relative;flex:1;min-width:140px}
+.cs-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:10px 12px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:500;color:var(--text-3);cursor:pointer;font-family:inherit;text-align:left;transition:border .2s,color .2s;white-space:nowrap;overflow:hidden;min-height:44px}
+.cs-trigger.has-value{border-color:var(--primary);color:var(--primary)}
+.cs-trigger-label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cs-trigger svg{flex-shrink:0;transition:transform .2s}
+.cs-trigger.open svg{transform:rotate(180deg)}
+.cs-panel{position:absolute;top:calc(100% + 4px);left:0;min-width:100%;width:max-content;max-width:340px;background:#fff;border:1.5px solid var(--border);border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.1);z-index:30;display:none;max-height:380px;overflow-y:auto}
+.cs-panel.open{display:block}
+.cs-flat-item{display:flex;align-items:center;gap:7px;width:100%;padding:10px 16px;background:none;border:none;text-align:left;font-size:13px;color:var(--text-1);cursor:pointer;font-family:inherit;white-space:nowrap}
+.cs-flat-item:hover{background:var(--surface-alt)}
+.cs-flat-item.cs-selected{color:var(--primary);font-weight:600;background:var(--primary-soft)}
+.cs-count{margin-left:auto;font-size:11px;color:var(--text-3);font-weight:500}
+.filter-select{flex:1;min-width:140px;padding:10px 30px 10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:500;color:var(--text-1);background:#fff;outline:none;cursor:pointer;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%239AA8A0' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;min-height:44px;transition:border .2s,color .2s}
+.filter-select:focus{border-color:var(--primary)}
+.filter-select.has-value{border-color:var(--primary);color:var(--primary)}
+
+.filter-chips-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.filter-chips-row:empty{display:none;margin-top:0}
+.fchip{display:inline-flex;align-items:center;gap:4px;padding:5px 10px 5px 12px;border-radius:100px;font-size:12px;font-weight:600;border:none;cursor:pointer;transition:opacity .15s;background:var(--primary-soft);color:var(--primary);font-family:inherit}
+.fchip:hover{opacity:.75}
+.fchip-x{font-size:14px;opacity:.55;line-height:1}
+.clear-all-btn{background:none;border:1.5px solid var(--border);border-radius:100px;padding:5px 12px;font-size:12px;color:var(--text-3);cursor:pointer;font-family:inherit;font-weight:500;white-space:nowrap;transition:all .15s}
+.clear-all-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* LISTING */
+.list-hd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.list-title{font-size:16px;font-weight:700}
+.list-count{font-size:13px;color:var(--text-3);font-weight:500}
+
+.jobs-list{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+.jcard{background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column}
+.jcard:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:#c8d8cc}
+.jcard.expired{opacity:.65}
+.jthumb{aspect-ratio:16/10;background:var(--surface-alt);position:relative;overflow:hidden}
+.jthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.jthumb-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-3);font-size:12px}
+.jthumb-empty svg{opacity:.5}
+.jstatus{position:absolute;top:8px;right:8px;background:#fff;color:var(--primary);font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.jstatus.expired{color:var(--text-3)}
+.jbody{padding:14px;flex:1;display:flex;flex-direction:column;gap:8px}
+.jcat{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:inline-flex;align-items:center;gap:4px}
+.jtitle{font-size:15px;font-weight:700;line-height:1.35;color:var(--text-1);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.jmeta{display:flex;flex-wrap:wrap;gap:8px 12px;font-size:12px;color:var(--text-2)}
+.jmeta span{display:inline-flex;align-items:center;gap:4px}
+.jmeta svg{flex-shrink:0;color:var(--text-3)}
+.jsal{margin-top:auto;font-size:14px;font-weight:700;color:var(--primary)}
+
+.empty{text-align:center;padding:60px 20px;color:var(--text-3)}
+.empty svg{opacity:.4;margin-bottom:10px}
+.loading{text-align:center;padding:40px 20px;color:var(--text-3);font-size:13px}
+.loading-spin{display:inline-block;width:18px;height:18px;border:2.5px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0;overflow-y:auto}
+.modal-overlay.open{display:flex}
+@media(min-width:600px){.modal-overlay{align-items:center;padding:20px}}
+.modal-box{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:720px;max-height:92vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,.2)}
+@media(min-width:600px){.modal-box{border-radius:20px}}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 0;cursor:pointer}
+@media(min-width:600px){.modal-handle{display:none}}
+.modal-hd{padding:14px 20px 0;position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.modal-close{background:var(--surface-alt);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2);font-size:18px;flex-shrink:0}
+.modal-close:hover{background:var(--border)}
+.modal-body{padding:0 20px 24px}
+.mimg-wrap{margin:14px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface-alt)}
+.mimg-wrap img{width:100%;height:auto;display:block}
+.mimg-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--primary);text-decoration:none;font-weight:600;padding:8px 14px;border:1.5px solid var(--primary-soft);background:var(--primary-soft);border-radius:8px;margin-top:8px}
+.mimg-link:hover{background:var(--primary);color:#fff}
+.mtitle{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:14px 0 8px;line-height:1.3}
+.mchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.mchip{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:100px;font-size:12px;font-weight:600;background:var(--surface-alt);color:var(--text-2);border:1px solid var(--border)}
+.mchip.sal{background:var(--primary-soft);color:var(--primary);border-color:var(--primary-soft)}
+.mchip.status{background:#fff;border-color:var(--border)}
+.mchip.status.expired{color:var(--text-3)}
+.mgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:8px}
+.mrow{padding:10px 12px;background:var(--surface-alt);border-radius:8px;font-size:13px}
+.mrow-lbl{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.mrow-val{color:var(--text-1);word-break:break-word;white-space:pre-line}
+.mdesc{background:var(--surface-alt);border-radius:8px;padding:14px;font-size:13px;color:var(--text-1);line-height:1.6;white-space:pre-line;margin-top:12px}
+
+/* MOBILE */
+@media(max-width:600px){
+  .jobs-list{grid-template-columns:1fr}
+  .hero{padding:24px 0 18px}
+  .filter-bar{padding:12px;border-radius:12px}
+  .filter-row{gap:6px}
+  .cs-wrap,.filter-select{min-width:0;flex:1 1 100%}
+}
+
+footer{background:#fff;border-top:1px solid var(--border);padding:20px 0;margin-top:40px;text-align:center;font-size:12px;color:var(--text-3)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-ic">V</div>
+      <div class="logo-text">Tokutei <em>Đầu Việt</em></div>
+    </a>
+    <div class="nav-meta">
+      <span class="hide-sm" id="lastSync">—</span>
+      <button class="refresh-btn" onclick="loadJobs(true)" id="refreshBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+        Tải lại
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <h1>Bảng tra cứu đơn hàng đầu Việt</h1>
+    <p>Dành cho cộng tác viên — đồng bộ tự động từ Google Sheet</p>
+    <div class="hero-stats">
+      <div class="hstat"><strong id="statTotal">—</strong> tổng đơn</div>
+      <div class="hstat"><strong id="statActive">—</strong> đang tuyển</div>
+      <div class="hstat"><strong id="statExpired">—</strong> đã hết</div>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="filter-bar">
+    <div class="search-bar">
+      <span class="search-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input id="searchInput" type="text" placeholder="Tìm theo tên việc, địa điểm, ngành nghề..." oninput="doSearch(this.value)" autocomplete="off">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
+    </div>
+    <div class="filter-row">
+      <div class="cs-wrap" id="nganhWrap">
+        <button class="cs-trigger" id="nganhTrigger" onclick="toggleNganh(event)">
+          <span class="cs-trigger-label" id="nganhLabel">Ngành nghề</span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="cs-panel" id="nganhPanel"></div>
+      </div>
+      <select id="khuvucSelect" class="filter-select" onchange="setFilterPref(this.value)">
+        <option value="">Khu vực</option>
+        <option value="Hokkaido">Hokkaido</option>
+        <option value="Tohoku">Tohoku — Aomori, Miyagi…</option>
+        <option value="Kanto">Kanto — Tokyo, Kanagawa…</option>
+        <option value="Chubu">Chubu — Aichi, Shizuoka…</option>
+        <option value="Kansai">Kansai — Osaka, Kyoto…</option>
+        <option value="Chugoku">Chugoku — Hiroshima…</option>
+        <option value="Shikoku">Shikoku — Ehime, Kagawa…</option>
+        <option value="Kyushu">Kyushu — Fukuoka…</option>
+        <option value="Okinawa">Okinawa</option>
+      </select>
+      <select id="statusSelect" class="filter-select" onchange="setFilterStatus(this.value)">
+        <option value="">Trạng thái</option>
+        <option value="active">Đang tuyển</option>
+        <option value="inactive">Đã hết</option>
+      </select>
+    </div>
+    <div class="filter-chips-row" id="filterChipsRow"></div>
+  </div>
+
+  <div class="list-hd">
+    <div class="list-title">Danh sách đơn hàng</div>
+    <div class="list-count" id="listCount">—</div>
+  </div>
+  <div id="jobsContainer">
+    <div class="loading"><span class="loading-spin"></span> Đang tải dữ liệu…</div>
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-handle" onclick="closeModal()"></div>
+    <div class="modal-hd">
+      <span style="font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.05em">Chi tiết đơn hàng</span>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<footer>
+  <div>Tokutei Đầu Việt — Nội bộ CTV · Dữ liệu cập nhật tự động từ Google Sheet</div>
+</footer>
+
+<script>
+const SHEET_ID = '12gDW-PXFRf6mtJtt1f-Brc-O9J80IB8yf8iDxkmvv7U';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+
+let JOBS = [];
+let currentSearch = '';
+let currentCat = null;
+let currentPref = null;
+let currentStatus = null;
+
+const REGIONS = {
+  'Hokkaido':['Hokkaido','Sapporo'],
+  'Tohoku':['Aomori','Iwate','Miyagi','Akita','Yamagata','Fukushima','Sendai'],
+  'Kanto':['Ibaraki','Tochigi','Gunma','Saitama','Chiba','Tokyo','Kanagawa','Yokohama'],
+  'Chubu':['Niigata','Toyama','Ishikawa','Fukui','Yamanashi','Nagano','Shizuoka','Aichi','Mie','Nagoya'],
+  'Kansai':['Shiga','Kyoto','Osaka','Hyogo','Nara','Wakayama','Kobe'],
+  'Chugoku':['Tottori','Shimane','Okayama','Hiroshima','Yamaguchi'],
+  'Shikoku':['Tokushima','Kagawa','Ehime','Kochi'],
+  'Kyushu':['Fukuoka','Saga','Nagasaki','Kumamoto','Oita','Miyazaki','Kagoshima'],
+  'Okinawa':['Okinawa']
+};
+
+const CAT_ICON = {
+  'Chế biến thực phẩm':'utensils','Xây dựng':'hard-hat','Điều dưỡng':'heart-pulse',
+  'Nông nghiệp':'sprout','Vệ sinh tòa nhà':'sparkles','Bảo dưỡng ô tô':'car',
+  'Lưu trú':'building-2','Ngư nghiệp':'fish','Đóng tàu':'anchor',
+  'Hàng không':'plane','Vận tải':'truck','Lâm nghiệp':'tree-pine',
+  'May':'scissors','In ấn':'printer','Nhà hàng':'chef-hat',
+  'Cơ khí':'cog','Điện':'zap','Điện tử':'cpu'
+};
+
+function noDia(s){return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase()}
+function getCatIcon(cat){
+  if(!cat) return 'briefcase';
+  for(const [k,v] of Object.entries(CAT_ICON)) if(cat.includes(k)) return v;
+  return 'briefcase';
+}
+
+// CSV parser (handles quoted multi-line fields)
+function parseCSV(text){
+  const rows = []; let row = []; let cur = ''; let inQ = false;
+  for(let i = 0; i < text.length; i++){
+    const c = text[i];
+    if(inQ){
+      if(c === '"' && text[i+1] === '"'){ cur += '"'; i++; }
+      else if(c === '"'){ inQ = false; }
+      else cur += c;
+    } else {
+      if(c === '"') inQ = true;
+      else if(c === ','){ row.push(cur); cur = ''; }
+      else if(c === '\n'){ row.push(cur); rows.push(row); row = []; cur = ''; }
+      else if(c === '\r'){ /* skip */ }
+      else cur += c;
+    }
+  }
+  if(cur.length > 0 || row.length > 0){ row.push(cur); rows.push(row); }
+  return rows;
+}
+
+async function loadJobs(force){
+  const btn = document.getElementById('refreshBtn');
+  if(btn) btn.classList.add('loading');
+  try {
+    const url = CSV_URL + (force ? '&t=' + Date.now() : '');
+    const resp = await fetch(url, { cache: force ? 'no-store' : 'default' });
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    const csv = await resp.text();
+    const rows = parseCSV(csv);
+    if(rows.length < 2){ throw new Error('Sheet trống'); }
+    // First row is header, skip it
+    JOBS = rows.slice(1).filter(r => r.some(c => (c||'').trim())).map((r, i) => ({
+      id: 'v' + i,
+      title:    (r[0]||'').trim(),
+      category: (r[1]||'').trim(),
+      subCat:   (r[2]||'').trim(),
+      city:     (r[3]||'').trim(),
+      salary:   (r[4]||'').trim(),
+      japanese: (r[5]||'').trim(),
+      gender:   (r[6]||'').trim(),
+      workHours:(r[7]||'').trim(),
+      daysOff:  (r[8]||'').trim(),
+      overtime: (r[9]||'').trim(),
+      raise:    (r[10]||'').trim(),
+      bonus:    (r[11]||'').trim(),
+      housing:  (r[12]||'').trim(),
+      desc:     (r[13]||'').trim(),
+      status:   ((r[14]||'').trim().toLowerCase()) || 'active',
+      imageUrl: (r[15]||'').trim()
+    })).filter(j => j.title);
+
+    document.getElementById('lastSync').innerHTML = 'Cập nhật: <strong>' + new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) + '</strong>';
+    updateStats();
+    buildNganhPanel();
+    renderJobs();
+  } catch(e){
+    document.getElementById('jobsContainer').innerHTML = `<div class="empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p style="margin-top:8px">Lỗi tải dữ liệu: ${e.message}</p>
+      <p style="font-size:11px;margin-top:6px">Kiểm tra: sheet có Share = "Anyone with the link" chưa?</p>
+    </div>`;
+  } finally {
+    if(btn) btn.classList.remove('loading');
+  }
+}
+
+function updateStats(){
+  const total = JOBS.length;
+  const active = JOBS.filter(j => j.status === 'active').length;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statActive').textContent = active;
+  document.getElementById('statExpired').textContent = total - active;
+}
+
+function buildNganhPanel(){
+  const panel = document.getElementById('nganhPanel');
+  const counts = {};
+  JOBS.forEach(j => { if(j.category) counts[j.category] = (counts[j.category]||0) + 1; });
+  const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+  panel.innerHTML = sorted.map(([cat,c]) =>
+    `<button class="cs-flat-item" data-val="${cat.replace(/"/g,'&quot;')}" onclick="selectNganh('${cat.replace(/'/g,"\\'")}')">
+      <i data-lucide="${getCatIcon(cat)}" style="width:14px;height:14px;color:var(--primary)"></i>
+      <span>${cat}</span>
+      <span class="cs-count">${c}</span>
+    </button>`
+  ).join('');
+  if(window.lucide) lucide.createIcons();
+}
+
+function toggleNganh(e){
+  e.stopPropagation();
+  document.getElementById('nganhPanel').classList.toggle('open');
+  document.getElementById('nganhTrigger').classList.toggle('open');
+}
+function closeNganh(){
+  document.getElementById('nganhPanel')?.classList.remove('open');
+  document.getElementById('nganhTrigger')?.classList.remove('open');
+}
+function selectNganh(val){
+  currentCat = val;
+  document.getElementById('nganhTrigger').classList.add('has-value');
+  document.getElementById('nganhLabel').textContent = val;
+  document.querySelectorAll('#nganhPanel .cs-flat-item').forEach(b => b.classList.toggle('cs-selected', b.dataset.val === val));
+  closeNganh();
+  renderJobs();
+}
+function clearNganh(){
+  currentCat = null;
+  document.getElementById('nganhTrigger').classList.remove('has-value');
+  document.getElementById('nganhLabel').textContent = 'Ngành nghề';
+  document.querySelectorAll('#nganhPanel .cs-flat-item').forEach(b => b.classList.remove('cs-selected'));
+  renderJobs();
+}
+
+function doSearch(val){
+  currentSearch = val.trim().toLowerCase();
+  document.getElementById('searchClear').classList.toggle('show', !!currentSearch);
+  renderJobs();
+}
+function clearSearch(){
+  document.getElementById('searchInput').value = '';
+  currentSearch = '';
+  document.getElementById('searchClear').classList.remove('show');
+  renderJobs();
+}
+function setFilterPref(val){
+  currentPref = val || null;
+  const sel = document.getElementById('khuvucSelect');
+  sel.classList.toggle('has-value', !!val);
+  renderJobs();
+}
+function clearPref(){
+  currentPref = null;
+  const sel = document.getElementById('khuvucSelect');
+  sel.value = ''; sel.classList.remove('has-value');
+  renderJobs();
+}
+function setFilterStatus(val){
+  currentStatus = val || null;
+  const sel = document.getElementById('statusSelect');
+  sel.classList.toggle('has-value', !!val);
+  renderJobs();
+}
+function clearStatus(){
+  currentStatus = null;
+  const sel = document.getElementById('statusSelect');
+  sel.value = ''; sel.classList.remove('has-value');
+  renderJobs();
+}
+
+function clearAllFilters(){
+  currentSearch = ''; currentCat = null; currentPref = null; currentStatus = null;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').classList.remove('show');
+  document.getElementById('khuvucSelect').value = '';
+  document.getElementById('khuvucSelect').classList.remove('has-value');
+  document.getElementById('statusSelect').value = '';
+  document.getElementById('statusSelect').classList.remove('has-value');
+  document.getElementById('nganhTrigger').classList.remove('has-value');
+  document.getElementById('nganhLabel').textContent = 'Ngành nghề';
+  document.querySelectorAll('#nganhPanel .cs-flat-item').forEach(b => b.classList.remove('cs-selected'));
+  renderJobs();
+}
+
+function renderFilterChips(){
+  const row = document.getElementById('filterChipsRow');
+  const chips = [];
+  if(currentSearch) chips.push(`<button class="fchip" onclick="clearSearch()">🔍 "${currentSearch}" <span class="fchip-x">×</span></button>`);
+  if(currentCat) chips.push(`<button class="fchip" onclick="clearNganh()">${currentCat} <span class="fchip-x">×</span></button>`);
+  if(currentPref) chips.push(`<button class="fchip" onclick="clearPref()">${currentPref} <span class="fchip-x">×</span></button>`);
+  if(currentStatus) chips.push(`<button class="fchip" onclick="clearStatus()">${currentStatus==='active'?'Đang tuyển':'Đã hết'} <span class="fchip-x">×</span></button>`);
+  if(chips.length > 1) chips.push(`<button class="clear-all-btn" onclick="clearAllFilters()">Xóa tất cả</button>`);
+  row.innerHTML = chips.join('');
+}
+
+function renderJobs(){
+  let jobs = JOBS.slice();
+  if(currentStatus) jobs = jobs.filter(j => j.status === currentStatus);
+  if(currentCat) jobs = jobs.filter(j => j.category === currentCat);
+  if(currentPref){
+    const list = REGIONS[currentPref];
+    if(list) jobs = jobs.filter(j => list.some(p => (j.city||'').toLowerCase().includes(p.toLowerCase())));
+  }
+  if(currentSearch){
+    const q = noDia(currentSearch);
+    jobs = jobs.filter(j =>
+      noDia(j.title).includes(q) ||
+      noDia(j.city).includes(q) ||
+      noDia(j.category).includes(q) ||
+      noDia(j.desc).includes(q)
+    );
+  }
+
+  document.getElementById('listCount').textContent = jobs.length + ' đơn';
+  renderFilterChips();
+
+  const container = document.getElementById('jobsContainer');
+  if(!jobs.length){
+    container.innerHTML = `<div class="empty">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <p>Không có đơn nào phù hợp${currentSearch?` với "<strong>${currentSearch}</strong>"`:''}</p>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = '<div class="jobs-list">' + jobs.map(j => {
+    const isExp = j.status !== 'active';
+    const ico = getCatIcon(j.category);
+    const thumb = j.imageUrl
+      ? `<div class="jthumb"><img src="${proxyImg(j.imageUrl)}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'jthumb-empty\\'><svg width=\\'36\\' height=\\'36\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\'/><circle cx=\\'9\\' cy=\\'9\\' r=\\'2\\'/><path d=\\'M21 15l-5-5L5 21\\'/></svg></div>'"><span class="jstatus ${isExp?'expired':''}">${isExp?'Đã hết':'Đang tuyển'}</span></div>`
+      : `<div class="jthumb"><div class="jthumb-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div><span class="jstatus ${isExp?'expired':''}">${isExp?'Đã hết':'Đang tuyển'}</span></div>`;
+    return `<div class="jcard ${isExp?'expired':''}" onclick="openJob('${j.id}')">
+      ${thumb}
+      <div class="jbody">
+        <div class="jcat"><i data-lucide="${ico}" style="width:11px;height:11px"></i> ${j.category||'—'}</div>
+        <div class="jtitle">${j.title}</div>
+        <div class="jmeta">
+          ${j.city?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.city}</span>`:''}
+          ${j.japanese?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20"/><path d="M12 2a15 15 0 0 0 0 20"/></svg>${j.japanese}</span>`:''}
+          ${j.gender?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>${j.gender}</span>`:''}
+        </div>
+        ${j.salary?`<div class="jsal">${j.salary}</div>`:''}
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+  if(window.lucide) lucide.createIcons();
+}
+
+// Convert Google Drive view URL to direct image URL
+function proxyImg(url){
+  if(!url) return '';
+  const m = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`;
+  const m2 = url.match(/[?&]id=([^&]+)/);
+  if(m2) return `https://drive.google.com/thumbnail?id=${m2[1]}&sz=w800`;
+  return url;
+}
+
+function openJob(id){
+  const j = JOBS.find(x => x.id === id);
+  if(!j) return;
+  const isExp = j.status !== 'active';
+  const ico = getCatIcon(j.category);
+  const imgUrl = j.imageUrl ? proxyImg(j.imageUrl) : '';
+  const fields = [
+    ['Ngành phụ', j.subCat],
+    ['Tiếng Nhật', j.japanese],
+    ['Giới tính', j.gender],
+    ['Giờ làm', j.workHours],
+    ['Ngày nghỉ', j.daysOff],
+    ['Tăng ca', j.overtime],
+    ['Tăng lương', j.raise],
+    ['Thưởng', j.bonus],
+    ['Nhà ở', j.housing],
+  ].filter(([_,v]) => v && v.trim());
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="jcat" style="margin-top:14px"><i data-lucide="${ico}" style="width:12px;height:12px"></i> ${j.category||'—'}</div>
+    <div class="mtitle">${j.title}</div>
+    <div class="mchips">
+      ${j.salary?`<span class="mchip sal">💴 ${j.salary}</span>`:''}
+      ${j.city?`<span class="mchip">📍 ${j.city}</span>`:''}
+      <span class="mchip status ${isExp?'expired':''}">${isExp?'⏸ Đã hết':'● Đang tuyển'}</span>
+    </div>
+    ${imgUrl?`<div class="mimg-wrap"><img src="${imgUrl}" alt="${j.title}" onerror="this.parentElement.style.display='none'"></div>
+      <a class="mimg-link" href="${j.imageUrl}" target="_blank" rel="noopener">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M21 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h6"/></svg>
+        Mở ảnh gốc trên Drive
+      </a>`:''}
+    ${fields.length?`<div class="mgrid">${fields.map(([l,v]) => `<div class="mrow"><div class="mrow-lbl">${l}</div><div class="mrow-val">${v}</div></div>`).join('')}</div>`:''}
+    ${j.desc?`<div class="mdesc">${j.desc}</div>`:''}
+  `;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if(window.lucide) lucide.createIcons();
+}
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('click', e => {
+  if(!e.target.closest('#nganhWrap')) closeNganh();
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ closeNganh(); closeModal(); }
+});
+
+loadJobs();
+if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
