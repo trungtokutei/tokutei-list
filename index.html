@@ -88,58 +88,45 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 .list-title{font-size:16px;font-weight:700}
 .list-count{font-size:13px;color:var(--text-3);font-weight:500}
 
-.jobs-list{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
-.jrow{display:flex;align-items:stretch;gap:14px;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;background:#fff}
+.jobs-list{display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.jrow{display:flex;align-items:center;gap:14px;padding:10px 14px;border-bottom:1px solid var(--border);transition:background .12s;background:#fff}
 .jrow:last-child{border-bottom:none}
 .jrow:hover{background:var(--surface-alt)}
-.jrow.expired{opacity:.6}
-.jthumb{width:88px;min-width:88px;aspect-ratio:1;background:var(--surface-alt);border-radius:8px;overflow:hidden;flex-shrink:0;position:relative;border:1px solid var(--border)}
-.jthumb img{width:100%;height:100%;object-fit:cover;display:block}
-.jthumb-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-3)}
-.jthumb-empty svg{opacity:.4}
-.jinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
-.jhead{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
-.jcat{font-size:10px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:inline-flex;align-items:center;gap:4px}
-.jstatus{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--primary-soft);color:var(--primary);margin-left:auto;flex-shrink:0;white-space:nowrap}
-.jstatus.expired{background:var(--surface-alt);color:var(--text-3)}
-.jtitle{font-size:14px;font-weight:700;line-height:1.35;color:var(--text-1)}
-.jmeta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--text-2)}
-.jmeta span{display:inline-flex;align-items:center;gap:4px}
-.jmeta svg{flex-shrink:0;color:var(--text-3)}
-.jsal{font-size:13px;font-weight:700;color:var(--primary)}
+.jrow.expired{opacity:.55}
+.jcat{flex:0 0 200px;font-size:12px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.03em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jtitle{flex:1;min-width:0;font-size:14px;font-weight:600;color:var(--text-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jimg-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px solid var(--primary-soft);background:var(--primary-soft);color:var(--primary);font-size:12px;font-weight:600;border-radius:8px;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s;white-space:nowrap}
+.jimg-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.jimg-btn.disabled{background:var(--surface-alt);color:var(--text-3);border-color:var(--border);cursor:not-allowed;pointer-events:none}
 
 .empty{text-align:center;padding:60px 20px;color:var(--text-3)}
 .empty svg{opacity:.4;margin-bottom:10px}
 .loading{text-align:center;padding:40px 20px;color:var(--text-3);font-size:13px}
 .loading-spin{display:inline-block;width:18px;height:18px;border:2.5px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:flex-end;justify-content:center;padding:0;overflow-y:auto}
-.modal-overlay.open{display:flex}
-@media(min-width:600px){.modal-overlay{align-items:center;padding:20px}}
-.modal-box{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:720px;max-height:92vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,.2)}
-@media(min-width:600px){.modal-box{border-radius:20px}}
-.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 0;cursor:pointer}
-@media(min-width:600px){.modal-handle{display:none}}
-.modal-hd{padding:14px 20px 0;position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.modal-close{background:var(--surface-alt);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-2);font-size:18px;flex-shrink:0}
-.modal-close:hover{background:var(--border)}
-.modal-body{padding:0 20px 24px}
-.mimg-wrap{margin:14px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--surface-alt)}
-.mimg-wrap img{width:100%;height:auto;display:block}
-.mimg-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--primary);text-decoration:none;font-weight:600;padding:8px 14px;border:1.5px solid var(--primary-soft);background:var(--primary-soft);border-radius:8px;margin-top:8px}
-.mimg-link:hover{background:var(--primary);color:#fff}
-.mtitle{font-size:20px;font-weight:800;letter-spacing:-.02em;margin:14px 0 8px;line-height:1.3}
-.mchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.mchip{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:100px;font-size:12px;font-weight:600;background:var(--surface-alt);color:var(--text-2);border:1px solid var(--border)}
-.mchip.sal{background:var(--primary-soft);color:var(--primary);border-color:var(--primary-soft)}
-.mchip.status{background:#fff;border-color:var(--border)}
-.mchip.status.expired{color:var(--text-3)}
-.mgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:8px}
-.mrow{padding:10px 12px;background:var(--surface-alt);border-radius:8px;font-size:13px}
-.mrow-lbl{font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
-.mrow-val{color:var(--text-1);word-break:break-word;white-space:pre-line}
-.mdesc{background:var(--surface-alt);border-radius:8px;padding:14px;font-size:13px;color:var(--text-1);line-height:1.6;white-space:pre-line;margin-top:12px}
+/* IMAGE LIGHTBOX */
+.lb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.lb-overlay.open{display:flex}
+.lb-box{background:#0a0a0a;border-radius:14px;width:100%;max-width:960px;max-height:96vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lb-hd{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#1a1a1a;color:#fff;border-bottom:1px solid #2a2a2a}
+.lb-title{flex:1;min-width:0;font-size:13px;font-weight:600;color:rgba(255,255,255,.9);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-acts{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.lb-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:7px 12px;border:none;border-radius:8px;background:rgba(255,255,255,.12);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s}
+.lb-btn:hover{background:rgba(255,255,255,.22)}
+.lb-dl{background:var(--primary)}
+.lb-dl:hover{background:var(--primary-dark)}
+.lb-close{padding:0;width:32px;height:32px;font-size:22px;line-height:1;border-radius:50%}
+.lb-body{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;background:#0a0a0a;min-height:200px;overflow:auto}
+.lb-body img{max-width:100%;max-height:80vh;height:auto;display:none;border-radius:6px;box-shadow:0 4px 24px rgba(0,0,0,.4)}
+.lb-loading{color:rgba(255,255,255,.6);font-size:13px;display:flex;align-items:center;gap:8px}
+.lb-loading .loading-spin{border-color:rgba(255,255,255,.2);border-top-color:#fff}
+@media(max-width:600px){
+  .lb-overlay{padding:0}
+  .lb-box{max-height:100vh;border-radius:0;height:100vh}
+  .lb-body img{max-height:calc(100vh - 70px)}
+  .lb-title{font-size:12px}
+  .lb-btn{padding:6px 10px;font-size:11px}
+}
 
 /* MOBILE */
 @media(max-width:600px){
@@ -147,8 +134,10 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
   .filter-bar{padding:12px;border-radius:12px}
   .filter-row{gap:6px}
   .cs-wrap,.filter-select{min-width:0;flex:1 1 100%}
-  .jthumb{width:72px;min-width:72px}
-  .jrow{padding:10px 12px;gap:10px}
+  .jrow{padding:10px 12px;gap:10px;flex-wrap:wrap}
+  .jcat{flex:0 0 100%;font-size:10px}
+  .jtitle{flex:1 1 auto;font-size:13px;white-space:normal}
+  .jimg-btn{padding:5px 10px;font-size:11px}
 }
 
 </style>
@@ -227,15 +216,20 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
   </div>
 </main>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal-box" id="modalBox">
-    <div class="modal-handle" onclick="closeModal()"></div>
-    <div class="modal-hd">
-      <span style="font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.05em">Chi tiết đơn hàng</span>
-      <button class="modal-close" onclick="closeModal()">×</button>
+<!-- IMAGE LIGHTBOX -->
+<div class="lb-overlay" id="lb" onclick="if(event.target===this)closeImage()">
+  <div class="lb-box">
+    <div class="lb-hd">
+      <div class="lb-title" id="lbTitle">—</div>
+      <div class="lb-acts">
+        <a class="lb-btn lb-dl" id="lbDownload" download><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải về</a>
+        <button class="lb-btn lb-close" onclick="closeImage()" aria-label="Đóng">×</button>
+      </div>
     </div>
-    <div class="modal-body" id="modalBody"></div>
+    <div class="lb-body">
+      <div class="lb-loading" id="lbLoading"><span class="loading-spin"></span> Đang tải ảnh…</div>
+      <img id="lbImg" alt="" onload="document.getElementById('lbLoading').style.display='none';this.style.display='block'" onerror="document.getElementById('lbLoading').innerHTML='Không tải được ảnh. <a href=\'#\' id=\'lbOpenSrc\' style=\'color:var(--primary)\'>Mở trên Drive</a>'">
+    </div>
   </div>
 </div>
 
@@ -484,83 +478,60 @@ function renderJobs(){
     return;
   }
 
-  const emptyThumb = `<div class="jthumb-empty"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>`;
   container.innerHTML = '<div class="jobs-list">' + jobs.map(j => {
     const isExp = j.status !== 'active';
-    const ico = getCatIcon(j.category);
-    const thumb = j.imageUrl
-      ? `<div class="jthumb"><img src="${proxyImg(j.imageUrl)}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML=this.dataset.fb" data-fb='${emptyThumb.replace(/'/g,"&#39;")}'></div>`
-      : `<div class="jthumb">${emptyThumb}</div>`;
-    return `<div class="jrow ${isExp?'expired':''}" onclick="openJob('${j.id}')">
-      ${thumb}
-      <div class="jinfo">
-        <div class="jhead">
-          <div class="jcat"><i data-lucide="${ico}" style="width:11px;height:11px"></i> ${j.category||'—'}</div>
-          <span class="jstatus ${isExp?'expired':''}">${isExp?'Đã hết':'Đang tuyển'}</span>
-        </div>
-        <div class="jtitle">${j.title}</div>
-        <div class="jmeta">
-          ${j.city?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.city}</span>`:''}
-          ${j.japanese?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20"/><path d="M12 2a15 15 0 0 0 0 20"/></svg>${j.japanese}</span>`:''}
-          ${j.gender?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>${j.gender}</span>`:''}
-          ${j.salary?`<span class="jsal">${j.salary}</span>`:''}
-        </div>
-      </div>
+    const imgBtn = j.imageUrl
+      ? `<a class="jimg-btn" onclick="event.stopPropagation();openImage('${j.id}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg> Xem ảnh</a>`
+      : `<span class="jimg-btn disabled"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 3l18 18"/></svg> Chưa có ảnh</span>`;
+    return `<div class="jrow ${isExp?'expired':''}">
+      <div class="jcat">${j.category||'—'}</div>
+      <div class="jtitle">${j.title}</div>
+      ${imgBtn}
     </div>`;
   }).join('') + '</div>';
-  if(window.lucide) lucide.createIcons();
 }
 
-// Convert Google Drive view URL to direct image URL
-function proxyImg(url){
-  if(!url) return '';
+// Extract Drive file ID from various URL formats
+function driveId(url){
+  if(!url) return null;
   const m = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-  if(m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w800`;
+  if(m) return m[1];
   const m2 = url.match(/[?&]id=([^&]+)/);
-  if(m2) return `https://drive.google.com/thumbnail?id=${m2[1]}&sz=w800`;
-  return url;
+  if(m2) return m2[1];
+  return null;
+}
+// Display URL (large thumbnail)
+function driveViewUrl(url){
+  const id = driveId(url);
+  return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w2000` : url;
+}
+// Download URL (forces save)
+function driveDownloadUrl(url){
+  const id = driveId(url);
+  return id ? `https://drive.google.com/uc?export=download&id=${id}` : url;
 }
 
-function openJob(id){
+function openImage(id){
   const j = JOBS.find(x => x.id === id);
-  if(!j) return;
-  const isExp = j.status !== 'active';
-  const ico = getCatIcon(j.category);
-  const imgUrl = j.imageUrl ? proxyImg(j.imageUrl) : '';
-  const fields = [
-    ['Ngành phụ', j.subCat],
-    ['Tiếng Nhật', j.japanese],
-    ['Giới tính', j.gender],
-    ['Giờ làm', j.workHours],
-    ['Ngày nghỉ', j.daysOff],
-    ['Tăng ca', j.overtime],
-    ['Tăng lương', j.raise],
-    ['Thưởng', j.bonus],
-    ['Nhà ở', j.housing],
-  ].filter(([_,v]) => v && v.trim());
-
-  document.getElementById('modalBody').innerHTML = `
-    <div class="jcat" style="margin-top:14px"><i data-lucide="${ico}" style="width:12px;height:12px"></i> ${j.category||'—'}</div>
-    <div class="mtitle">${j.title}</div>
-    <div class="mchips">
-      ${j.salary?`<span class="mchip sal">💴 ${j.salary}</span>`:''}
-      ${j.city?`<span class="mchip">📍 ${j.city}</span>`:''}
-      <span class="mchip status ${isExp?'expired':''}">${isExp?'⏸ Đã hết':'● Đang tuyển'}</span>
-    </div>
-    ${imgUrl?`<div class="mimg-wrap"><img src="${imgUrl}" alt="${j.title}" onerror="this.parentElement.style.display='none'"></div>
-      <a class="mimg-link" href="${j.imageUrl}" target="_blank" rel="noopener">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M21 14v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h6"/></svg>
-        Mở ảnh gốc trên Drive
-      </a>`:''}
-    ${fields.length?`<div class="mgrid">${fields.map(([l,v]) => `<div class="mrow"><div class="mrow-lbl">${l}</div><div class="mrow-val">${v}</div></div>`).join('')}</div>`:''}
-    ${j.desc?`<div class="mdesc">${j.desc}</div>`:''}
-  `;
-  document.getElementById('modal').classList.add('open');
+  if(!j || !j.imageUrl) return;
+  const img = document.getElementById('lbImg');
+  const loading = document.getElementById('lbLoading');
+  img.style.display = 'none';
+  loading.style.display = 'flex';
+  loading.innerHTML = '<span class="loading-spin"></span> Đang tải ảnh…';
+  img.src = driveViewUrl(j.imageUrl);
+  img.alt = j.title;
+  document.getElementById('lbTitle').textContent = `${j.category||'—'} · ${j.title}`;
+  const dl = document.getElementById('lbDownload');
+  dl.href = driveDownloadUrl(j.imageUrl);
+  // Sanitize filename: only ASCII + safe chars
+  const fname = (j.title||'job').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-').slice(0,60) || 'job';
+  dl.setAttribute('download', `${fname}.jpg`);
+  document.getElementById('lb').classList.add('open');
   document.body.style.overflow = 'hidden';
-  if(window.lucide) lucide.createIcons();
 }
-function closeModal(){
-  document.getElementById('modal').classList.remove('open');
+function closeImage(){
+  document.getElementById('lb').classList.remove('open');
   document.body.style.overflow = '';
 }
 
@@ -568,7 +539,7 @@ document.addEventListener('click', e => {
   if(!e.target.closest('#nganhWrap')) closeNganh();
 });
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape'){ closeNganh(); closeModal(); }
+  if(e.key === 'Escape'){ closeNganh(); closeImage(); }
 });
 
 loadJobs();
