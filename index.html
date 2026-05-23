@@ -41,13 +41,8 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 .refresh-btn.loading svg{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* HERO */
-.hero{background:var(--grad);color:#fff;padding:36px 0 24px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-30%;right:-15%;width:55%;aspect-ratio:1;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 65%);pointer-events:none}
-.hero h1{font-size:clamp(22px,3.6vw,32px);font-weight:800;letter-spacing:-.02em;position:relative}
-
 /* FILTER */
-.filter-bar{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin:-20px 0 20px;position:relative;z-index:5}
+.filter-bar{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin:20px 0;position:relative;z-index:5}
 .search-bar{position:relative;margin-bottom:10px}
 .search-bar input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 38px 11px 38px;font-size:14px;color:var(--text-1);background:var(--surface-alt);outline:none;transition:border .2s;font-family:inherit}
 .search-bar input:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(26,138,79,.1)}
@@ -66,7 +61,15 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 .cs-flat-item{display:flex;align-items:center;gap:7px;width:100%;padding:10px 16px;background:none;border:none;text-align:left;font-size:13px;color:var(--text-1);cursor:pointer;font-family:inherit;white-space:nowrap}
 .cs-flat-item:hover{background:var(--surface-alt)}
 .cs-flat-item.cs-selected{color:var(--primary);font-weight:600;background:var(--primary-soft)}
-.cs-count{margin-left:auto;font-size:11px;color:var(--text-3);font-weight:500}
+.cs-ico{width:15px;height:15px;flex-shrink:0;color:var(--primary)}
+.cs-group-hd{display:flex;align-items:center;gap:7px;width:100%;padding:10px 12px 10px 16px;background:none;border:none;text-align:left;font-size:12px;font-weight:700;color:var(--text-2);cursor:pointer;font-family:inherit;letter-spacing:.02em;text-transform:uppercase}
+.cs-group-hd span:not(.cs-ico){flex:1}
+.cs-group-hd:hover{background:var(--surface-alt)}
+.cs-group-hd svg{flex-shrink:0;transition:transform .2s}
+.cs-group-hd.open svg{transform:rotate(180deg)}
+.cs-group-items{display:none;padding:0 0 4px}
+.cs-group-items.open{display:block}
+.cs-group-items .cs-flat-item{padding-left:30px;font-size:13px;color:var(--text-1);text-transform:none;font-weight:400;letter-spacing:0}
 .filter-select{flex:1;min-width:140px;padding:10px 30px 10px 12px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:500;color:var(--text-1);background:#fff;outline:none;cursor:pointer;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%239AA8A0' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;min-height:44px;transition:border .2s,color .2s}
 .filter-select:focus{border-color:var(--primary)}
 .filter-select.has-value{border-color:var(--primary);color:var(--primary)}
@@ -195,12 +198,6 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
   </div>
 </nav>
 
-<header class="hero">
-  <div class="container">
-    <h1>Các đơn bên em đang tuyển nhờ các ACE hỗ trợ ạ</h1>
-  </div>
-</header>
-
 <main class="container">
   <div class="filter-bar">
     <div class="search-bar">
@@ -263,9 +260,8 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 <div class="lb-overlay" id="lb" onclick="if(event.target===this)closeImage()">
   <div class="lb-box">
     <div class="lb-hd">
-      <button class="lb-close" onclick="closeImage()" aria-label="Đóng">×</button>
       <div class="lb-title" id="lbTitle">—</div>
-      <a class="lb-dl" id="lbDownload" download><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Tải ảnh</a>
+      <button class="lb-close" onclick="closeImage()" aria-label="Đóng">×</button>
     </div>
     <div class="lb-body">
       <div class="lb-loading" id="lbLoading"><span class="loading-spin"></span> Đang tải ảnh…</div>
@@ -298,20 +294,58 @@ const REGIONS = {
   'Okinawa':['Okinawa']
 };
 
-const CAT_ICON = {
-  'Chế biến thực phẩm':'utensils','Xây dựng':'hard-hat','Điều dưỡng':'heart-pulse',
-  'Nông nghiệp':'sprout','Vệ sinh tòa nhà':'sparkles','Bảo dưỡng ô tô':'car',
-  'Lưu trú':'building-2','Ngư nghiệp':'fish','Đóng tàu':'anchor',
-  'Hàng không':'plane','Vận tải':'truck','Lâm nghiệp':'tree-pine',
-  'May':'scissors','In ấn':'printer','Nhà hàng':'chef-hat',
-  'Cơ khí':'cog','Điện':'zap','Điện tử':'cpu'
+const NGANH_GROUPS = [
+  {g:'Chế biến thực phẩm', items:['Chế biến thực phẩm']},
+  {g:'① Gia công cơ khí - kim loại', items:['Đúc nóng','Đúc lạnh','Dập kim loại','Kim loại tấm','Tekko','Rèn','Gia công cơ khí','Hoàn thiện sản phẩm','Đúc nhựa','Hàn','Sơn kim loại','Lắp ráp thiết bị điện','Kiểm tra máy móc','Bảo trì máy móc','Đóng gói công nghiệp']},
+  {g:'② Lắp ráp điện - điện tử', items:['Gia công cơ khí','Hoàn thiện sản phẩm','Đúc nhựa','Lắp ráp thiết bị điện','Lắp ráp thiết bị điện tử','Sản xuất bảng mạch in (PCB)','Kiểm tra máy móc','Bảo trì máy móc','Đóng gói công nghiệp']},
+  {g:'③ Xử lý bề mặt kim loại', items:['Mạ điện','Xử lý oxy hóa nhôm (Anodize)']},
+  {g:'Xây dựng', items:['Nhóm ngành xây dựng','Đường ống','Cốp pha','Phá dỡ','Cốt thép','Sơn xây dựng','Chống thấm','Giàn giáo','Bê tông','Xây trát','San lấp','Ốp lát','Lái máy xây dựng','Hoàn thiện nội thất','Mộc xây dựng','Hoàn thiện ngoại thất','Hàn xây dựng','Điện','Thi công cách nhiệt','Lợp mái','Kim loại tấm xây dựng']},
+  {g:'Điều dưỡng', items:['Điều dưỡng']},
+  {g:'Nhà hàng', items:['Nhà hàng']},
+  {g:'Nông nghiệp', items:['Nông nghiệp']},
+  {g:'Vệ sinh tòa nhà', items:['Vệ sinh tòa nhà']},
+  {g:'Bảo dưỡng ô tô', items:['Bảo dưỡng ô tô']},
+  {g:'Lưu trú / Khách sạn', items:['Lưu trú / Khách sạn']},
+  {g:'Ngư nghiệp', items:['Ngư nghiệp']},
+  {g:'Đóng tàu', items:['Đóng tàu']},
+  {g:'Hàng không', items:['Hàng không']},
+  {g:'Vận tải', items:['Vận tải']},
+  {g:'Lâm nghiệp', items:['Lâm nghiệp']},
+  {g:'May', items:['May']},
+  {g:'In ấn', items:['In ấn']},
+];
+const NHOM_1_ITEMS = new Set(['Đúc nóng','Đúc lạnh','Dập kim loại','Kim loại tấm','Tekko','Rèn','Gia công cơ khí','Hoàn thiện sản phẩm','Đúc nhựa','Hàn','Sơn kim loại','Lắp ráp thiết bị điện','Kiểm tra máy móc','Bảo trì máy móc','Đóng gói công nghiệp']);
+const NHOM_2_ITEMS = new Set(['Gia công cơ khí','Hoàn thiện sản phẩm','Đúc nhựa','Lắp ráp thiết bị điện','Lắp ráp thiết bị điện tử','Sản xuất bảng mạch in (PCB)','Kiểm tra máy móc','Bảo trì máy móc','Đóng gói công nghiệp']);
+const NHOM_XD_ITEMS = new Set(['đường ống','cốp pha','phá dỡ','cốt thép','sơn xây dựng','chống thấm','giàn giáo','bê tông','xây trát','san lấp','ốp lát','lái máy xây dựng','hoàn thiện nội thất','mộc xây dựng','hoàn thiện ngoại thất','hàn xây dựng','điện','thi công cách nhiệt','lợp mái','kim loại tấm xây dựng']);
+
+const NGANH_ICON = {
+  'Chế biến thực phẩm':'utensils','① Gia công cơ khí - kim loại':'factory','② Lắp ráp điện - điện tử':'cpu','③ Xử lý bề mặt kim loại':'layers',
+  'Xây dựng':'hard-hat','Điều dưỡng':'heart-pulse','Nhà hàng':'chef-hat','Nông nghiệp':'sprout','Vệ sinh tòa nhà':'sparkles',
+  'Bảo dưỡng ô tô':'car','Lưu trú / Khách sạn':'building-2','Ngư nghiệp':'fish','Đóng tàu':'anchor','Hàng không':'plane',
+  'Vận tải':'truck','Lâm nghiệp':'tree-pine','May':'scissors','In ấn':'printer'
 };
 
+function jobMatchesCat(jcat, selectedCat){
+  if(!jcat || !selectedCat) return false;
+  const jcatLow = jcat.toLowerCase().trim();
+  const selLow = selectedCat.toLowerCase().trim();
+  const parts = jcat.split(',').map(s => s.trim().toLowerCase());
+  if(parts.some(p => p === selLow)) return true;
+  const inNhom1 = NHOM_1_ITEMS.has(selectedCat);
+  const inNhom2 = NHOM_2_ITEMS.has(selectedCat);
+  if(jcatLow === 'nhóm 1' && inNhom1) return true;
+  if(jcatLow === 'nhóm 2' && inNhom2) return true;
+  if(jcatLow === 'nhóm 1+2' && (inNhom1 || inNhom2)) return true;
+  if(selLow === 'xây dựng' && parts.some(p => NHOM_XD_ITEMS.has(p))) return true;
+  if(NHOM_XD_ITEMS.has(selLow) && parts.some(p => p === 'xây dựng')) return true;
+  if(selLow === 'nhóm ngành xây dựng' && parts.some(p => p === 'xây dựng')) return true;
+  return false;
+}
+
 function noDia(s){return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase()}
-function getCatIcon(cat){
-  if(!cat) return 'briefcase';
-  for(const [k,v] of Object.entries(CAT_ICON)) if(cat.includes(k)) return v;
-  return 'briefcase';
+function getNganhIcon(name){
+  const ico = NGANH_ICON[name];
+  return ico ? `<i data-lucide="${ico}" class="cs-ico"></i>` : '';
 }
 
 // CSV parser (handles quoted multi-line fields)
@@ -358,6 +392,7 @@ async function loadJobs(force){
 
     document.getElementById('lastSync').innerHTML = 'Cập nhật: <strong>' + new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) + '</strong>';
     buildNganhPanel();
+    initNganhEvents();
     renderJobs();
   } catch(e){
     document.getElementById('jobsContainer').innerHTML = `<div class="empty">
@@ -372,15 +407,12 @@ async function loadJobs(force){
 
 function buildNganhPanel(){
   const panel = document.getElementById('nganhPanel');
-  const counts = {};
-  JOBS.forEach(j => { if(j.category) counts[j.category] = (counts[j.category]||0) + 1; });
-  const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
-  panel.innerHTML = sorted.map(([cat,c]) =>
-    `<button class="cs-flat-item" data-val="${cat.replace(/"/g,'&quot;')}" onclick="selectNganh('${cat.replace(/'/g,"\\'")}')">
-      <i data-lucide="${getCatIcon(cat)}" style="width:14px;height:14px;color:var(--primary)"></i>
-      <span>${cat}</span>
-      <span class="cs-count">${c}</span>
-    </button>`
+  const chevron = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
+  panel.innerHTML = NGANH_GROUPS.map(({g,items}) =>
+    items.length === 1
+      ? `<button class="cs-flat-item" data-val="${items[0]}">${getNganhIcon(items[0])||getNganhIcon(g)}<span>${items[0]}</span></button>`
+      : `<button class="cs-group-hd">${getNganhIcon(g)}<span>${g}</span>${chevron}</button>
+         <div class="cs-group-items">${items.map(v=>`<button class="cs-flat-item" data-val="${v}"><span>${v}</span></button>`).join('')}</div>`
   ).join('');
   if(window.lucide) lucide.createIcons();
 }
@@ -393,6 +425,25 @@ function toggleNganh(e){
 function closeNganh(){
   document.getElementById('nganhPanel')?.classList.remove('open');
   document.getElementById('nganhTrigger')?.classList.remove('open');
+}
+function initNganhEvents(){
+  const panel = document.getElementById('nganhPanel');
+  if(!panel || panel.dataset.bound) return;
+  panel.dataset.bound = '1';
+  panel.addEventListener('click', e => {
+    e.stopPropagation();
+    const item = e.target.closest('.cs-flat-item');
+    const hd = e.target.closest('.cs-group-hd');
+    if(item){
+      selectNganh(item.dataset.val);
+    } else if(hd){
+      const items = hd.nextElementSibling;
+      if(items){
+        const isOpen = items.classList.toggle('open');
+        hd.classList.toggle('open', isOpen);
+      }
+    }
+  });
 }
 function selectNganh(val){
   currentCat = val; currentPage = 1;
@@ -457,7 +508,7 @@ function renderFilterChips(){
 
 function renderJobs(){
   let jobs = JOBS.slice();
-  if(currentCat) jobs = jobs.filter(j => j.category === currentCat);
+  if(currentCat) jobs = jobs.filter(j => jobMatchesCat(j.category||'', currentCat));
   if(currentPref){
     const list = REGIONS[currentPref];
     if(list) jobs = jobs.filter(j => list.some(p => (j.city||'').toLowerCase().includes(p.toLowerCase())));
@@ -521,11 +572,6 @@ function driveViewUrl(url){
   const id = driveId(url);
   return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w2000` : url;
 }
-// Download URL (forces save)
-function driveDownloadUrl(url){
-  const id = driveId(url);
-  return id ? `https://drive.google.com/uc?export=download&id=${id}` : url;
-}
 
 function openImage(id){
   const j = JOBS.find(x => x.id === id);
@@ -538,11 +584,6 @@ function openImage(id){
   img.src = driveViewUrl(j.imageUrl);
   img.alt = j.title;
   document.getElementById('lbTitle').textContent = `${j.category||'—'} · ${j.title}`;
-  const dl = document.getElementById('lbDownload');
-  dl.href = driveDownloadUrl(j.imageUrl);
-  // Sanitize filename: only ASCII + safe chars
-  const fname = (j.title||'job').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-').slice(0,60) || 'job';
-  dl.setAttribute('download', `${fname}.jpg`);
   document.getElementById('lb').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
