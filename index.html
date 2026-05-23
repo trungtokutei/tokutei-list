@@ -88,23 +88,25 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 .list-title{font-size:16px;font-weight:700}
 .list-count{font-size:13px;color:var(--text-3);font-weight:500}
 
-.jobs-list{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
-.jcard{background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column}
-.jcard:hover{transform:translateY(-2px);box-shadow:var(--sh2);border-color:#c8d8cc}
-.jcard.expired{opacity:.65}
-.jthumb{aspect-ratio:16/10;background:var(--surface-alt);position:relative;overflow:hidden}
+.jobs-list{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.jrow{display:flex;align-items:stretch;gap:14px;padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;background:#fff}
+.jrow:last-child{border-bottom:none}
+.jrow:hover{background:var(--surface-alt)}
+.jrow.expired{opacity:.6}
+.jthumb{width:88px;min-width:88px;aspect-ratio:1;background:var(--surface-alt);border-radius:8px;overflow:hidden;flex-shrink:0;position:relative;border:1px solid var(--border)}
 .jthumb img{width:100%;height:100%;object-fit:cover;display:block}
-.jthumb-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-3);font-size:12px}
-.jthumb-empty svg{opacity:.5}
-.jstatus{position:absolute;top:8px;right:8px;background:#fff;color:var(--primary);font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.06)}
-.jstatus.expired{color:var(--text-3)}
-.jbody{padding:14px;flex:1;display:flex;flex-direction:column;gap:8px}
-.jcat{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:inline-flex;align-items:center;gap:4px}
-.jtitle{font-size:15px;font-weight:700;line-height:1.35;color:var(--text-1);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.jmeta{display:flex;flex-wrap:wrap;gap:8px 12px;font-size:12px;color:var(--text-2)}
+.jthumb-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-3)}
+.jthumb-empty svg{opacity:.4}
+.jinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.jhead{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.jcat{font-size:10px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.04em;display:inline-flex;align-items:center;gap:4px}
+.jstatus{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;background:var(--primary-soft);color:var(--primary);margin-left:auto;flex-shrink:0;white-space:nowrap}
+.jstatus.expired{background:var(--surface-alt);color:var(--text-3)}
+.jtitle{font-size:14px;font-weight:700;line-height:1.35;color:var(--text-1)}
+.jmeta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--text-2)}
 .jmeta span{display:inline-flex;align-items:center;gap:4px}
 .jmeta svg{flex-shrink:0;color:var(--text-3)}
-.jsal{margin-top:auto;font-size:14px;font-weight:700;color:var(--primary)}
+.jsal{font-size:13px;font-weight:700;color:var(--primary)}
 
 .empty{text-align:center;padding:60px 20px;color:var(--text-3)}
 .empty svg{opacity:.4;margin-bottom:10px}
@@ -141,14 +143,14 @@ nav{position:sticky;top:0;background:rgba(247,250,248,.95);backdrop-filter:blur(
 
 /* MOBILE */
 @media(max-width:600px){
-  .jobs-list{grid-template-columns:1fr}
   .hero{padding:24px 0 18px}
   .filter-bar{padding:12px;border-radius:12px}
   .filter-row{gap:6px}
   .cs-wrap,.filter-select{min-width:0;flex:1 1 100%}
+  .jthumb{width:72px;min-width:72px}
+  .jrow{padding:10px 12px;gap:10px}
 }
 
-footer{background:#fff;border-top:1px solid var(--border);padding:20px 0;margin-top:40px;text-align:center;font-size:12px;color:var(--text-3)}
 </style>
 </head>
 <body>
@@ -171,8 +173,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:20px 0;margin-
 
 <header class="hero">
   <div class="container">
-    <h1>Bảng tra cứu đơn hàng đầu Việt</h1>
-    <p>Dành cho cộng tác viên — đồng bộ tự động từ Google Sheet</p>
+    <h1>Các đơn bên em đang tuyển nhờ các ACE hỗ trợ ạ</h1>
     <div class="hero-stats">
       <div class="hstat"><strong id="statTotal">—</strong> tổng đơn</div>
       <div class="hstat"><strong id="statActive">—</strong> đang tuyển</div>
@@ -238,9 +239,6 @@ footer{background:#fff;border-top:1px solid var(--border);padding:20px 0;margin-
   </div>
 </div>
 
-<footer>
-  <div>Tokutei Đầu Việt — Nội bộ CTV · Dữ liệu cập nhật tự động từ Google Sheet</div>
-</footer>
 
 <script>
 const SHEET_ID = '12gDW-PXFRf6mtJtt1f-Brc-O9J80IB8yf8iDxkmvv7U';
@@ -486,23 +484,27 @@ function renderJobs(){
     return;
   }
 
+  const emptyThumb = `<div class="jthumb-empty"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>`;
   container.innerHTML = '<div class="jobs-list">' + jobs.map(j => {
     const isExp = j.status !== 'active';
     const ico = getCatIcon(j.category);
     const thumb = j.imageUrl
-      ? `<div class="jthumb"><img src="${proxyImg(j.imageUrl)}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'jthumb-empty\\'><svg width=\\'36\\' height=\\'36\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1.5\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\'/><circle cx=\\'9\\' cy=\\'9\\' r=\\'2\\'/><path d=\\'M21 15l-5-5L5 21\\'/></svg></div>'"><span class="jstatus ${isExp?'expired':''}">${isExp?'Đã hết':'Đang tuyển'}</span></div>`
-      : `<div class="jthumb"><div class="jthumb-empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div><span class="jstatus ${isExp?'expired':''}">${isExp?'Đã hết':'Đang tuyển'}</span></div>`;
-    return `<div class="jcard ${isExp?'expired':''}" onclick="openJob('${j.id}')">
+      ? `<div class="jthumb"><img src="${proxyImg(j.imageUrl)}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML=this.dataset.fb" data-fb='${emptyThumb.replace(/'/g,"&#39;")}'></div>`
+      : `<div class="jthumb">${emptyThumb}</div>`;
+    return `<div class="jrow ${isExp?'expired':''}" onclick="openJob('${j.id}')">
       ${thumb}
-      <div class="jbody">
-        <div class="jcat"><i data-lucide="${ico}" style="width:11px;height:11px"></i> ${j.category||'—'}</div>
+      <div class="jinfo">
+        <div class="jhead">
+          <div class="jcat"><i data-lucide="${ico}" style="width:11px;height:11px"></i> ${j.category||'—'}</div>
+          <span class="jstatus ${isExp?'expired':''}">${isExp?'Đã hết':'Đang tuyển'}</span>
+        </div>
         <div class="jtitle">${j.title}</div>
         <div class="jmeta">
           ${j.city?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${j.city}</span>`:''}
           ${j.japanese?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20"/><path d="M12 2a15 15 0 0 0 0 20"/></svg>${j.japanese}</span>`:''}
           ${j.gender?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>${j.gender}</span>`:''}
+          ${j.salary?`<span class="jsal">${j.salary}</span>`:''}
         </div>
-        ${j.salary?`<div class="jsal">${j.salary}</div>`:''}
       </div>
     </div>`;
   }).join('') + '</div>';
