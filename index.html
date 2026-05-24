@@ -379,12 +379,12 @@ async function loadJobs(force){
     // First row is header, skip it
     JOBS = rows.slice(1).filter(r => r.some(c => (c||'').trim())).map((r, i) => ({
       id: 'v' + i,
-      title:    (r[0]||'').trim(),
-      category: (r[1]||'').trim(),
-      city:     (r[3]||'').trim(),
-      gender:   (r[6]||'').trim(),
-      status:   ((r[14]||'').trim().toLowerCase()) || 'active',
-      imageUrl: (r[15]||'').trim()
+      title:    (r[1]||'').trim(),
+      category: (r[2]||'').trim(),
+      city:     (r[4]||'').trim(),
+      gender:   (r[7]||'').trim(),
+      status:   ((r[15]||'').trim().toLowerCase()) || 'active',
+      imageUrl: (r[16]||'').trim()
     })).filter(j => j.title && j.status === 'active').reverse();
 
     document.getElementById('lastSync').innerHTML = 'Cập nhật: <strong>' + new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) + '</strong>';
