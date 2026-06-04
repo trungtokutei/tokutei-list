@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap');
+
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  body{
+    width:1200px;height:630px;overflow:hidden;
+    background:#0a0a0a;
+    font-family:'Be Vietnam Pro',sans-serif;
+    position:relative;
+  }
+
+  /* Background grid */
+  .bg-grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(201,164,92,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,164,92,.04) 1px, transparent 1px);
+    background-size:60px 60px;
+  }
+
+  /* Radial glow center */
+  .bg-glow{
+    position:absolute;inset:0;
+    background:radial-gradient(ellipse 900px 500px at 50% 50%, rgba(201,164,92,.07) 0%, transparent 70%);
+  }
+
+  /* Left accent glow */
+  .bg-accent{
+    position:absolute;
+    left:-100px;top:50%;transform:translateY(-50%);
+    width:500px;height:500px;border-radius:50%;
+    background:radial-gradient(circle, rgba(201,164,92,.09) 0%, transparent 65%);
+  }
+
+  /* Corner decorations */
+  .corner{position:absolute;width:60px;height:60px}
+  .corner::before,.corner::after{content:'';position:absolute;background:#c9a45c;opacity:.5}
+  .corner-tl{top:32px;left:32px}
+  .corner-tl::before{width:1px;height:60px;left:0;top:0}
+  .corner-tl::after{width:60px;height:1px;left:0;top:0}
+  .corner-tr{top:32px;right:32px}
+  .corner-tr::before{width:1px;height:60px;right:0;top:0}
+  .corner-tr::after{width:60px;height:1px;right:0;top:0}
+  .corner-bl{bottom:32px;left:32px}
+  .corner-bl::before{width:1px;height:60px;left:0;bottom:0}
+  .corner-bl::after{width:60px;height:1px;left:0;bottom:0}
+  .corner-br{bottom:32px;right:32px}
+  .corner-br::before{width:1px;height:60px;right:0;bottom:0}
+  .corner-br::after{width:60px;height:1px;right:0;bottom:0}
+
+  /* Big kanji watermark */
+  .kanji{
+    position:absolute;
+    right:80px;top:50%;transform:translateY(-50%);
+    font-family:'Outfit',sans-serif;
+    font-size:420px;font-weight:800;
+    color:rgba(201,164,92,.045);
+    line-height:1;
+    letter-spacing:-.02em;
+    user-select:none;
+  }
+
+  /* Main content */
+  .content{
+    position:absolute;
+    left:80px;top:0;bottom:0;
+    display:flex;flex-direction:column;justify-content:center;
+    gap:0;
+  }
+
+  /* Logo badge */
+  .logo-badge{
+    display:flex;align-items:center;gap:14px;
+    margin-bottom:32px;
+  }
+  .logo-ic{
+    width:52px;height:52px;border-radius:12px;
+    background:linear-gradient(135deg,#c9a45c,#8b6914);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Outfit',sans-serif;font-size:24px;font-weight:800;
+    color:#0a0a0a;
+    box-shadow:0 0 30px rgba(201,164,92,.3);
+  }
+  .logo-name{
+    font-family:'Outfit',sans-serif;
+    font-size:18px;font-weight:600;letter-spacing:.12em;
+    color:#c9a45c;text-transform:uppercase;
+  }
+
+  /* Title */
+  .title{
+    font-family:'Outfit',sans-serif;
+    font-size:62px;font-weight:800;
+    line-height:1.1;letter-spacing:-.02em;
+    color:#f5f0e8;
+    margin-bottom:20px;
+    max-width:700px;
+  }
+  .title span{color:#c9a45c}
+
+  /* Subtitle */
+  .subtitle{
+    font-size:20px;font-weight:400;
+    color:rgba(245,240,232,.55);
+    letter-spacing:.01em;
+    margin-bottom:40px;
+    max-width:580px;
+    line-height:1.5;
+  }
+
+  /* Stats row */
+  .stats{
+    display:flex;gap:32px;align-items:center;
+    margin-bottom:44px;
+  }
+  .stat{display:flex;flex-direction:column;gap:4px}
+  .stat-num{
+    font-family:'Outfit',sans-serif;
+    font-size:28px;font-weight:700;
+    color:#c9a45c;line-height:1;
+  }
+  .stat-lbl{
+    font-size:13px;color:rgba(245,240,232,.4);
+    letter-spacing:.05em;
+  }
+  .stat-div{width:1px;height:40px;background:rgba(201,164,92,.2)}
+
+  /* CTA pill */
+  .cta{
+    display:inline-flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg,#c9a45c,#e8c978);
+    color:#0a0a0a;
+    font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;
+    letter-spacing:.08em;text-transform:uppercase;
+    padding:14px 28px;border-radius:100px;
+    width:fit-content;
+  }
+  .cta svg{width:16px;height:16px}
+
+  /* URL bottom */
+  .url-bar{
+    position:absolute;
+    bottom:36px;left:80px;right:80px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .url-text{
+    font-size:13px;color:rgba(201,164,92,.4);
+    letter-spacing:.06em;font-family:'Outfit',sans-serif;
+  }
+  .tag-pills{display:flex;gap:8px}
+  .pill{
+    padding:5px 12px;border-radius:100px;
+    border:1px solid rgba(201,164,92,.2);
+    font-size:12px;color:rgba(245,240,232,.4);
+    letter-spacing:.05em;
+  }
+
+  /* Right side cards preview */
+  .cards-preview{
+    position:absolute;
+    right:80px;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:12px;
+    width:280px;
+    opacity:.7;
+  }
+  .pcard{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(201,164,92,.12);
+    border-radius:12px;
+    padding:16px 18px;
+    backdrop-filter:blur(10px);
+  }
+  .pcard-cat{
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:#c9a45c;margin-bottom:8px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .pcard-cat::before{content:'';width:6px;height:6px;border-radius:50%;background:#c9a45c;flex-shrink:0}
+  .pcard-title{
+    font-size:14px;font-weight:500;color:#f5f0e8;
+    line-height:1.4;margin-bottom:8px;
+  }
+  .pcard-meta{font-size:12px;color:rgba(245,240,232,.35);display:flex;gap:10px}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+<div class="bg-accent"></div>
+
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+
+<div class="kanji">特</div>
+
+<div class="content">
+  <div class="logo-badge">
+    <div class="logo-ic">特</div>
+    <div class="logo-name">Trung Phạm Tokutei</div>
+  </div>
+
+  <div class="title">Đơn hàng<br><span>Nhật Bản</span><br>mới nhất</div>
+
+  <div class="subtitle">Tokutei · Kỹ sư — Cập nhật liên tục từ các đối tác uy tín</div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">26+</div>
+      <div class="stat-lbl">ĐỐI TÁC</div>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <div class="stat-num">100+</div>
+      <div class="stat-lbl">ĐƠN HÀNG</div>
+    </div>
+    <div class="stat-div"></div>
+    <div class="stat">
+      <div class="stat-num">15+</div>
+      <div class="stat-lbl">NGÀNH NGHỀ</div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    Xem danh sách
+  </div>
+</div>
+
+<!-- Preview cards (right side, partially visible) -->
+<div class="cards-preview">
+  <div class="pcard">
+    <div class="pcard-cat">Sản xuất</div>
+    <div class="pcard-title">Chế biến thực phẩm · Saitama</div>
+    <div class="pcard-meta"><span>Nam · Nữ</span><span>Tokutei</span></div>
+  </div>
+  <div class="pcard">
+    <div class="pcard-cat">Xây dựng</div>
+    <div class="pcard-title">Thi công sắt thép · Osaka</div>
+    <div class="pcard-meta"><span>Nam</span><span>Tokutei</span></div>
+  </div>
+  <div class="pcard">
+    <div class="pcard-cat">Cơ khí</div>
+    <div class="pcard-title">Gia công cơ khí · Aichi</div>
+    <div class="pcard-meta"><span>Nam · Nữ</span><span>Kỹ sư</span></div>
+  </div>
+</div>
+
+<div class="url-bar">
+  <div class="url-text">trungtokutei.github.io/tokutei-list</div>
+  <div class="tag-pills">
+    <div class="pill">TOKUTEI</div>
+    <div class="pill">KỸ SƯ</div>
+    <div class="pill">NHẬT BẢN</div>
+  </div>
+</div>
+
+</body>
+</html>
