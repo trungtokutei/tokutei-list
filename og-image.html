@@ -57,10 +57,10 @@
   /* Big kanji watermark */
   .kanji{
     position:absolute;
-    right:80px;top:50%;transform:translateY(-50%);
+    left:50%;top:50%;transform:translate(-50%,-50%);
     font-family:'Outfit',sans-serif;
-    font-size:420px;font-weight:800;
-    color:rgba(201,164,92,.045);
+    font-size:500px;font-weight:800;
+    color:rgba(201,164,92,.035);
     line-height:1;
     letter-spacing:-.02em;
     user-select:none;
@@ -69,9 +69,11 @@
   /* Main content */
   .content{
     position:absolute;
-    left:80px;top:0;bottom:0;
-    display:flex;flex-direction:column;justify-content:center;
+    inset:0;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;
     gap:0;
+    padding:0 80px;
   }
 
   /* Logo badge */
@@ -114,23 +116,6 @@
     line-height:1.5;
   }
 
-  /* Stats row */
-  .stats{
-    display:flex;gap:32px;align-items:center;
-    margin-bottom:44px;
-  }
-  .stat{display:flex;flex-direction:column;gap:4px}
-  .stat-num{
-    font-family:'Outfit',sans-serif;
-    font-size:28px;font-weight:700;
-    color:#c9a45c;line-height:1;
-  }
-  .stat-lbl{
-    font-size:13px;color:rgba(245,240,232,.4);
-    letter-spacing:.05em;
-  }
-  .stat-div{width:1px;height:40px;background:rgba(201,164,92,.2)}
-
   /* CTA pill */
   .cta{
     display:inline-flex;align-items:center;gap:10px;
@@ -146,8 +131,8 @@
   /* URL bottom */
   .url-bar{
     position:absolute;
-    bottom:36px;left:80px;right:80px;
-    display:flex;align-items:center;justify-content:space-between;
+    bottom:36px;left:0;right:0;
+    display:flex;align-items:center;justify-content:center;gap:24px;
   }
   .url-text{
     font-size:13px;color:rgba(201,164,92,.4);
@@ -212,47 +197,12 @@
 
   <div class="subtitle">Tokutei · Kỹ sư — Cập nhật liên tục từ các đối tác uy tín</div>
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-num">26+</div>
-      <div class="stat-lbl">ĐỐI TÁC</div>
-    </div>
-    <div class="stat-div"></div>
-    <div class="stat">
-      <div class="stat-num">100+</div>
-      <div class="stat-lbl">ĐƠN HÀNG</div>
-    </div>
-    <div class="stat-div"></div>
-    <div class="stat">
-      <div class="stat-num">15+</div>
-      <div class="stat-lbl">NGÀNH NGHỀ</div>
-    </div>
-  </div>
-
   <div class="cta">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     Xem danh sách
   </div>
 </div>
 
-<!-- Preview cards (right side, partially visible) -->
-<div class="cards-preview">
-  <div class="pcard">
-    <div class="pcard-cat">Sản xuất</div>
-    <div class="pcard-title">Chế biến thực phẩm · Saitama</div>
-    <div class="pcard-meta"><span>Nam · Nữ</span><span>Tokutei</span></div>
-  </div>
-  <div class="pcard">
-    <div class="pcard-cat">Xây dựng</div>
-    <div class="pcard-title">Thi công sắt thép · Osaka</div>
-    <div class="pcard-meta"><span>Nam</span><span>Tokutei</span></div>
-  </div>
-  <div class="pcard">
-    <div class="pcard-cat">Cơ khí</div>
-    <div class="pcard-title">Gia công cơ khí · Aichi</div>
-    <div class="pcard-meta"><span>Nam · Nữ</span><span>Kỹ sư</span></div>
-  </div>
-</div>
 
 <div class="url-bar">
   <div class="url-text">trungtokutei.github.io/tokutei-list</div>
