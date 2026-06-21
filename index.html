@@ -27,6 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -393,8 +394,9 @@ nav{position:sticky;top:0;z-index:50;padding:0 24px;height:56px;display:flex;ali
 })();
 
 // ---- Data ----
-const SHEET_ID = '12gDW-PXFRf6mtJtt1f-Brc-O9J80IB8yf8iDxkmvv7U';
-const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+const SB_URL  = 'https://nkvgptpcedikhflbiwac.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5rdmdwdHBjZWRpa2hmbGJpd2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5Njc4MjgsImV4cCI6MjA5NzU0MzgyOH0.IMwfr1aV1YD51gNmQ_he6Qu2Hrwsl5guwpWlEybLjtc';
+const sb = window.supabase ? window.supabase.createClient(SB_URL, SB_ANON) : null;
 
 let JOBS = [];
 let currentSearch = '';
@@ -467,46 +469,27 @@ function noDia(s){ return (s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replac
 function esc(s){ return (s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
 function getNganhIcon(name){ const ico = NGANH_ICON[name]; return ico ? `<i data-lucide="${ico}" class="cs-ico"></i>` : ''; }
 
-function parseCSV(text){
-  const rows = []; let row = []; let cur = ''; let inQ = false;
-  for(let i = 0; i < text.length; i++){
-    const c = text[i];
-    if(inQ){
-      if(c === '"' && text[i+1] === '"'){ cur += '"'; i++; }
-      else if(c === '"') inQ = false;
-      else cur += c;
-    } else {
-      if(c === '"') inQ = true;
-      else if(c === ','){ row.push(cur); cur = ''; }
-      else if(c === '\n'){ row.push(cur); rows.push(row); row = []; cur = ''; }
-      else if(c === '\r'){ /* skip */ }
-      else cur += c;
-    }
-  }
-  if(cur.length > 0 || row.length > 0){ row.push(cur); rows.push(row); }
-  return rows;
-}
-
 async function loadJobs(force){
   const btn = document.getElementById('refreshBtn');
   if(btn) btn.classList.add('loading');
   try {
-    const url = CSV_URL + (force ? '&t=' + Date.now() : '');
-    const resp = await fetch(url, { cache: force ? 'no-store' : 'default' });
-    if(!resp.ok) throw new Error('HTTP ' + resp.status);
-    const csv = await resp.text();
-    const rows = parseCSV(csv);
-    if(rows.length < 2) throw new Error('Sheet trống');
-    JOBS = rows.slice(1).filter(r => r.some(c => (c||'').trim())).map((r, i) => ({
-      id: 'v' + i,
-      title:    (r[1]||'').trim(),
-      category: (r[2]||'').trim(),
-      city:     (r[4]||'').trim(),
-      gender:   (r[7]||'').trim(),
-      status:   ((r[15]||'').trim().toLowerCase()) || 'active',
-      imageUrl: (r[16]||'').trim()
-    })).filter(j => j.title && j.status === 'active').reverse();
-
+    if(!sb) throw new Error('Supabase chưa sẵn sàng');
+    const { data, error } = await sb.from('jobs')
+      .select('loai_don,ten_cv,nganh,tinh,gioi_tinh,link_anh,created_at')
+      .eq('trang_thai', 'active')
+      .order('created_at', { ascending: false });
+    if(error || !data) throw new Error(error?.message || 'Không có dữ liệu');
+    JOBS = data
+      .filter(r => r.ten_cv && noDia(r.loai_don || '').includes('viet'))
+      .map((r, i) => ({
+        id:       'v' + i,
+        title:    r.ten_cv    || '',
+        category: r.nganh     || '',
+        city:     r.tinh      || '',
+        gender:   r.gioi_tinh || '',
+        status:   'active',
+        imageUrl: r.link_anh  || ''
+      }));
     document.getElementById('lastSync').innerHTML = 'Cập nhật: <strong>' + new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}) + '</strong>';
     renderJobs();
   } catch(e){
