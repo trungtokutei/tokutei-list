@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  width: 1200px;
+  height: 630px;
+  overflow: hidden;
+  background: #0a0a0a;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.og {
+  width: 1200px;
+  height: 630px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* === Background layers === */
+.bg-grad {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 70% 55% at 50% 40%, rgba(201,164,92,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 80% 80%, rgba(201,164,92,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 35% 40% at 15% 70%, rgba(92,180,160,0.03) 0%, transparent 60%),
+    linear-gradient(180deg, #0a0a0a 0%, #111111 50%, #0a0a0a 100%);
+}
+
+/* Fuji silhouette */
+.fuji {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 200px;
+  opacity: 0.025;
+  background: 
+    linear-gradient(135deg, transparent 42%, #c9a45c 42.5%, #c9a45c 43%, transparent 43.5%),
+    linear-gradient(225deg, transparent 42%, #c9a45c 42.5%, #c9a45c 43%, transparent 43.5%);
+}
+
+/* Particles */
+.dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(201,164,92,0.25);
+}
+.dot:nth-child(1) { width:3px;height:3px;top:15%;left:12%;opacity:.3 }
+.dot:nth-child(2) { width:2px;height:2px;top:25%;left:85%;opacity:.2 }
+.dot:nth-child(3) { width:4px;height:4px;top:70%;left:20%;opacity:.15 }
+.dot:nth-child(4) { width:2px;height:2px;top:60%;left:75%;opacity:.25 }
+.dot:nth-child(5) { width:3px;height:3px;top:35%;left:92%;opacity:.2 }
+.dot:nth-child(6) { width:2px;height:2px;top:80%;left:55%;opacity:.15 }
+.dot:nth-child(7) { width:3px;height:3px;top:12%;left:45%;opacity:.18 }
+.dot:nth-child(8) { width:2px;height:2px;top:50%;left:8%;opacity:.22 }
+
+/* === Top border glow === */
+.top-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(201,164,92,0.5), transparent);
+}
+
+/* === Frame border === */
+.frame {
+  position: absolute;
+  inset: 20px;
+  border: 1px solid rgba(201,164,92,0.08);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+.frame::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 80px;
+  right: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,164,92,0.25), transparent);
+}
+
+/* === Content === */
+.content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 60px;
+}
+
+/* Brand icon */
+.brand-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(201,164,92,0.15), rgba(201,164,92,0.05));
+  border: 1px solid rgba(201,164,92,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #c9a45c;
+  margin-bottom: 24px;
+}
+
+/* Brand name */
+.brand {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: rgba(245,240,232,0.4);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* Main title */
+.title {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 54px;
+  font-weight: 800;
+  color: #f5f0e8;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.title .gold {
+  color: #c9a45c;
+}
+
+/* Japanese subtitle */
+.jp {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.25);
+  letter-spacing: 0.12em;
+  margin-bottom: 24px;
+}
+
+/* Description */
+.desc {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.55);
+  line-height: 1.65;
+  max-width: 650px;
+  margin-bottom: 32px;
+}
+
+/* Tags row */
+.tags {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.tag {
+  padding: 8px 22px;
+  border-radius: 100px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.tag-nhat {
+  background: rgba(92,180,160,0.1);
+  border: 1px solid rgba(92,180,160,0.25);
+  color: #5cb4a0;
+}
+
+.tag-kysis {
+  background: rgba(212,148,106,0.1);
+  border: 1px solid rgba(212,148,106,0.25);
+  color: #d4946a;
+}
+
+.tag-free {
+  background: linear-gradient(135deg, rgba(201,164,92,0.15), rgba(201,164,92,0.08));
+  border: 1px solid rgba(201,164,92,0.3);
+  color: #c9a45c;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* Separator dot */
+.sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(245,240,232,0.15);
+}
+
+/* Bottom bar */
+.bottom-bar {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.bottom-url {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(245,240,232,0.2);
+  letter-spacing: 0.08em;
+}
+
+.bottom-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(201,164,92,0.3);
+}
+</style>
+</head>
+<body>
+<div class="og">
+  <!-- Background -->
+  <div class="bg-grad"></div>
+  <div class="fuji"></div>
+  <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <div class="top-glow"></div>
+  <div class="frame"></div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="brand-icon">特</div>
+    <div class="brand">NIPPON TOKUTEI</div>
+    <h1 class="title">
+      Việc Làm <span class="gold">Tokutei & Kỹ Sư</span><br>
+      Đầu Nhật <span class="gold">Miễn Phí</span>
+    </h1>
+    <p class="jp">特定技能 · 技術ビザ — 完全無料サポート</p>
+    <p class="desc">
+      Hỗ trợ chuyển việc & chuyển visa cho Tokutei và Kỹ sư<br>
+      đang tại Nhật Bản — hoàn toàn không mất phí
+    </p>
+    <div class="tags">
+      <span class="tag tag-nhat">🟢 Tokutei · 特定技能</span>
+      <div class="sep"></div>
+      <span class="tag tag-kysis">🟠 Kỹ Sư · 技術</span>
+      <div class="sep"></div>
+      <span class="tag tag-free">✦ MIỄN PHÍ 100%</span>
+    </div>
+  </div>
+
+  <!-- Bottom -->
+  <div class="bottom-bar">
+    <span class="bottom-url">nippontokutei.com</span>
+  </div>
+</div>
+</body>
+</html>
