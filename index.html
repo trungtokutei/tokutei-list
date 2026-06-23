@@ -355,16 +355,16 @@ nav{position:sticky;top:0;z-index:50;padding:0 24px;height:56px;display:flex;ali
       this.size = Math.random() * 1.4 + 0.3;
       this.vx = (Math.random() - .5) * 0.28;
       this.vy = (Math.random() - .5) * 0.14 - .04;
-      this.op = Math.random() * 0.22 + .04;
+      this.op = Math.random() * 0.33 + .06;
       this.fd = Math.random() > .5 ? 1 : -1;
       this.fs = Math.random() * .003 + .001;
       this.h = 35 + Math.random() * 15;
       this.s = 50 + Math.random() * 30;
-      this.l = 60 + Math.random() * 20;
+      this.l = 70 + Math.random() * 30;
     }
     update(){
       this.x += this.vx; this.y += this.vy; this.op += this.fd * this.fs;
-      if(this.op >= .28) this.fd = -1;
+      if(this.op >= .42) this.fd = -1;
       if(this.op <= .02) this.fd = 1;
       if(this.x < -10) this.x = canvas.width + 10;
       if(this.x > canvas.width + 10) this.x = -10;
@@ -378,7 +378,7 @@ nav{position:sticky;top:0;z-index:50;padding:0 24px;height:56px;display:flex;ali
       ctx.fill();
     }
   }
-  const count = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 18000), 70);
+  const count = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 12000), 105);
   for(let i = 0; i < count; i++) particles.push(new P());
   function animate(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
