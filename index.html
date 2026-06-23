@@ -340,8 +340,7 @@ nav{position:sticky;top:0;z-index:50;padding:0 24px;height:56px;display:flex;ali
 // ---- Particles ----
 (function(){
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-  if(reduceMotion || coarse) return;
+  if(reduceMotion) return;
   const canvas = document.getElementById('pc');
   const ctx = canvas.getContext('2d');
   let particles = [], raf;
